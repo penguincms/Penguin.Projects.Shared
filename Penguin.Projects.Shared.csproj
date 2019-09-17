@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageIconUrl>http://www.penguinms.com/client/images/pg.png</PackageIconUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors>NU1605, CS1591</WarningsAsErrors>
+    <DocumentationFile>Comments.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DocumentationFile>Comments.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Penguin.Projects.Shared\**" />
+    <EmbeddedResource Remove="Penguin.Projects.Shared\**" />
+    <None Remove="Penguin.Projects.Shared\**" />
+  </ItemGroup>
+
+  <Target Name="CopyPackage" AfterTargets="Pack">
+    <Exec Command="IF EXIST &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot; (&#xD;&#xA;    IF EXIST &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)&quot; (&#xD;&#xA;        echo Removing %25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)&#xD;&#xA;        rd /s /q &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)&quot;&#xD;&#xA;    ) ELSE (&#xD;&#xA;        echo %25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName) NOT FOUND&#xD;&#xA;    )&#xD;&#xA;    echo Deploying $(ProjectName).$(version).nupkg to %25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)&#xD;&#xA;    echo &quot;$(ProjectDir)Penguin.Projects.Shared\nuget.exe&quot; add &quot;$(ProjectDir)bin\$(ConfigurationName)\$(ProjectName).$(version).nupkg&quot; -source &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot;&#xD;&#xA;    &quot;$(ProjectDir)Penguin.Projects.Shared\nuget.exe&quot; add &quot;$(ProjectDir)bin\$(ConfigurationName)\$(ProjectName).$(version).nupkg&quot; -source &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot;&#xD;&#xA;) ELSE (&#xD;&#xA;    echo Local $(ConfigurationName) Package Stream not found&#xD;&#xA;)" />
+  </Target>
+
+</Project>
