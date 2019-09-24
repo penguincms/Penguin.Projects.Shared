@@ -1,7 +1,7 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net48;netcoreapp3.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
@@ -40,7 +40,4 @@
     <None Remove="Penguin.Projects.Shared\**" />
   </ItemGroup>
 
-  <Target Name="CopyPackage" AfterTargets="Pack">
-       <Exec Command="IF EXIST &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot; (&#xD;&#xA;    IF EXIST &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)\$(version)&quot; (&#xD;&#xA;        echo Removing %25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)\$(version)&#xD;&#xA;        rd /s /q &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)\$(version)&quot;&#xD;&#xA;    ) ELSE (&#xD;&#xA;        echo %25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)\$(version) NOT FOUND&#xD;&#xA;    )&#xD;&#xA;    echo Deploying $(ProjectName).$(version).nupkg to %25APPDATA%25\Penguin\Nuget\$(ConfigurationName)\$(ProjectName)&#xD;&#xA;    echo &quot;$(ProjectDir)Penguin.Projects.Shared\nuget.exe&quot; add &quot;$(ProjectDir)bin\$(ConfigurationName)\$(ProjectName).$(version).nupkg&quot; -source &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot;&#xD;&#xA;    &quot;$(ProjectDir)Penguin.Projects.Shared\nuget.exe&quot; add &quot;$(ProjectDir)bin\$(ConfigurationName)\$(ProjectName).$(version).nupkg&quot; -source &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot;&#xD;&#xA;&#xD;&#xA;    if $(ConfigurationName) == Debug (&#xD;&#xA;        IF NOT EXIST &quot;%25userprofile%25\.nuget\packages\$(ProjectName)\$(version)&quot; (&#xD;&#xA;            echo Adding&quot;%25userprofile%25\.nuget\packages\$(ProjectName)\$(version)&quot;&#xD;&#xA;            mkdir &quot;%25userprofile%25\.nuget\packages\$(ProjectName)\$(version)&quot;&#xD;&#xA;        ) &#xD;&#xA;        IF NOT EXIST &quot;$(ProjectDir)NugetInstall&quot; (&#xD;&#xA;            echo Adding&quot;$(ProjectDir)NugetInstall&quot;&#xD;&#xA;            mkdir &quot;$(ProjectDir)NugetInstall&quot;&#xD;&#xA;        ) &#xD;&#xA;        echo Publishing To Local folder&#xD;&#xA;        echo  &quot;$(ProjectDir)Penguin.Projects.Shared\nuget.exe&quot; install $(ProjectName) -source &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot; -outputdirectory &quot;$(ProjectDir)NugetInstall&quot; -DependencyVersion Ignore&#xD;&#xA;       &quot;$(ProjectDir)Penguin.Projects.Shared\nuget.exe&quot; install $(ProjectName) -source &quot;%25APPDATA%25\Penguin\Nuget\$(ConfigurationName)&quot; -outputdirectory &quot;$(ProjectDir)NugetInstall&quot; -DependencyVersion Ignore    &#xD;&#xA;    &#xD;&#xA;        echo Copying to package cache&#xD;&#xA;        (robocopy &quot;$(ProjectDir)NugetInstall\$(ProjectName).$(version)&quot; &quot;%25userprofile%25\.nuget\packages\$(ProjectName)\$(version)&quot; /s /e)  ^&amp; IF %25ERRORLEVEL%25 LSS 8 SET ERRORLEVEL = 0&#xD;&#xA;&#xD;&#xA;        echo Cleaning up&#xD;&#xA;        rd /s /q &quot;$(ProjectDir)NugetInstall&quot;&#xD;&#xA;    )&#xD;&#xA;) ELSE (&#xD;&#xA;    echo Local $(ConfigurationName) Package Stream not found&#xD;&#xA;)" />
-  </Target>
 </Project>
