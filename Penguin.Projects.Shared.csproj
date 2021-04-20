@@ -13,6 +13,8 @@
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
 	<IncludeSymbols>false</IncludeSymbols>
@@ -25,12 +27,6 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>CS0108; CS3021; CS1587; CS2208; CA1062</WarningsAsErrors>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
   <ItemGroup>
     <Compile Remove="Penguin.Projects.Shared\**" />
     <EmbeddedResource Remove="Penguin.Projects.Shared\**" />
